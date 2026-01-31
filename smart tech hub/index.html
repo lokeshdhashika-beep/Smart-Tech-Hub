@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tech Hub | Premium Computer Components</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="glass-panel">
+        <div class="logo">Smart Tech Hub</div>
+
+        <div class="search-bar" style="flex: 1; max-width: 500px; margin: 0 40px; position: relative;">
+            <input type="text" id="search-input" placeholder="Search for components..."
+                style="width: 100%; padding: 12px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; color: white;">
+            <i class="fas fa-search" style="position: absolute; right: 15px; top: 12px; color: var(--text-muted);"></i>
+        </div>
+
+        <div class="nav-icons">
+            <!-- Dynamic User/Admin Section -->
+            <div id="user-section" style="display: flex; align-items: center; gap: 10px;">
+                <a href="login.html" class="nav-btn" title="Login">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+
+            <div class="nav-btn" id="builder-btn" title="AI PC Builder">
+                <i class="fas fa-magic"></i>
+            </div>
+
+            <div class="nav-btn" id="wishlist-btn">
+                <i class="far fa-heart"></i>
+                <span class="badge hidden" id="wishlist-count">0</span>
+            </div>
+
+            <div class="nav-btn" id="cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge hidden" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Details Modal -->
+    <div class="modal-overlay" id="product-details-modal">
+        <div class="glass-panel detail-card">
+            <button class="close-modal" id="close-details"><i class="fas fa-times"></i></button>
+            <div id="product-detail-content">
+                <!-- Content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PC Builder Wizard Modal -->
+    <div class="modal-overlay" id="builder-modal">
+        <div class="glass-panel builder-card">
+            <button class="close-modal" id="close-builder"><i class="fas fa-times"></i></button>
+            <div id="builder-wizard-content">
+                <!-- Wizard content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <h3>Categories</h3>
+            <ul class="category-list" id="category-list">
+                <!-- Categories will be injected here -->
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Featured Components</h2>
+                    <p style="color: var(--text-muted);" id="category-description">Premium hardware for your dream build
+                    </p>
+                </div>
+                <!-- Sort dropdown could go here -->
+            </div>
+
+            <div class="grid-container" id="product-grid">
+                <!-- Products will be injected here -->
+            </div>
+
+            <!-- Recommendations Section -->
+            <div id="recommendations-section" style="margin-top: 60px;">
+                <h3 style="margin-bottom: 20px; font-size: 24px;">Recommended for You</h3>
+                <div class="grid-container" id="recommendations-grid"
+                    style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+                    <!-- Recommended products will be injected here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Cart Modal/Sidebar -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h2>Your Cart</h2>
+                <button class="close-cart" id="close-cart"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="cart-items" id="cart-items-container">
+                <!-- Cart items -->
+            </div>
+
+            <div class="cart-footer">
+                <div class="total-row">
+                    <span>Total</span>
+                    <span id="cart-total">₹0</span>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="primary-btn" id="clear-cart-btn"
+                        style="background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; width: auto;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="primary-btn" id="checkout-btn">
+                        Pay Now <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal/Sidebar -->
+    <div class="modal-overlay" id="wishlist-modal">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h2>Your Wishlist</h2>
+                <button class="close-cart" id="close-wishlist"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="cart-items" id="wishlist-items-container">
+                <!-- Wishlist items -->
+            </div>
+
+            <div class="cart-footer">
+                <button class="primary-btn" onclick="moveAllToCart()">
+                    <i class="fas fa-cart-plus"></i> Move All to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

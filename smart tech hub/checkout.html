@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Smart Tech Hub</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- QRCode Lib -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- Font Awesome -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .checkout-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+        }
+
+        .order-summary,
+        .payment-section {
+            padding: 30px;
+        }
+
+        .bill-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--glass-border);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .bill-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .bill-total {
+            border-top: 2px solid var(--glass-border);
+            margin-top: 20px;
+            padding-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                background-image: none;
+            }
+
+            .glass-panel {
+                background: none;
+                backdrop-filter: none;
+                border: none;
+                box-shadow: none;
+            }
+
+            header,
+            .payment-actions,
+            .checkout-title {
+                display: none;
+            }
+
+            .checkout-grid {
+                display: block;
+            }
+
+            .payment-section {
+                display: none;
+            }
+
+            .order-summary {
+                width: 100%;
+                border: 1px solid #ccc;
+            }
+
+            .bill-header {
+                border-bottom: 1px dashed #000;
+            }
+
+            .bill-total {
+                border-top: 2px solid #000;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="glass-panel" style="position: relative;">
+        <div class="logo" onclick="window.location.href='index.html'">Smart Tech Hub</div>
+        <a href="index.html" class="nav-btn"><i class="fas fa-arrow-left"></i></a>
+    </header>
+
+    <div class="checkout-container">
+        <h1 class="checkout-title" style="margin-bottom: 30px;">Secure Checkout</h1>
+
+        <div class="checkout-grid">
+            <!-- Left: Bill/Invoice Preview -->
+            <div class="order-summary glass-panel" id="invoice-area">
+                <div class="bill-header">
+                    <h2>INVOICE</h2>
+                    <p>Smart Tech Hub Electronics</p>
+                    <p style="font-size: 12px; color: var(--text-muted);">Date: <span id="bill-date"></span></p>
+                    <p style="font-size: 12px; color: var(--text-muted);">Order ID: <span id="order-id"></span></p>
+                </div>
+
+                <div id="bill-items">
+                    <!-- Items -->
+                </div>
+
+                <div class="bill-total">
+                    <span>Total Amount</span>
+                    <span id="bill-total" style="color: var(--accent);">₹0</span>
+                </div>
+            </div>
+
+            <!-- Right: Payment -->
+            <div class="payment-section glass-panel">
+                <h2>Scan to Pay</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Scan QR code with any UPI app</p>
+
+                <div style="text-align: center;">
+                    <div id="qrcode" class="qr-container"></div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="primary-btn" id="confirm-pay-btn" style="margin-bottom: 15px;">
+                        Confirm Payment
+                    </button>
+                    <button class="secondary-btn" id="print-btn" style="width: 100%;">
+                        <i class="fas fa-print"></i> Print Bill
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="checkout.js"></script>
+</body>
+
+</html>
