@@ -25,8 +25,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    text-rendering: optimizeLegibility;
 }
 
 /* Custom Scrollbar */
@@ -54,21 +67,9 @@ i,
 .fab,
 .fa {
     font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", sans-serif !important;
-}
-
-body {
-    background-color: var(--dark-bg);
-    color: var(--text-main);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-}
-
-body {
-    background-color: var(--dark-bg);
-    color: var(--text-main);
-    min-height: 100vh;
-    overflow-x: hidden;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
 }
 
 /* Clear Animations */
@@ -89,9 +90,19 @@ h6 {
 /* Standard Panel Design */
 .glass-panel {
     background: #141a25;
+    background: rgba(20, 26, 37, 0.95);
+    /* Fallback */
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    .glass-panel {
+        background: rgba(20, 26, 37, 0.8);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
 }
 
 /* Header */
@@ -108,6 +119,14 @@ header {
     padding: 0 35px;
     background: #0a0e17;
     border-bottom: 1px solid var(--glass-border);
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    color: var(--text-main);
+    cursor: pointer;
+    margin-right: 15px;
 }
 
 .logo {
@@ -142,6 +161,24 @@ header {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.mobile-only {
+    display: none !important;
+}
+
+.desktop-only {
+    display: block !important;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: flex !important;
+    }
+
+    .desktop-only {
+        display: none !important;
+    }
+}
+
 .nav-btn:hover {
     background: var(--primary);
     color: #000;
@@ -171,6 +208,7 @@ header {
     display: flex;
     padding-top: var(--header-height);
     min-height: 100vh;
+    min-height: 100dvh;
 }
 
 /* Sidebar */
@@ -181,6 +219,7 @@ header {
     top: var(--header-height);
     left: 0;
     height: calc(100vh - var(--header-height));
+    height: calc(100dvh - var(--header-height));
     overflow-y: auto;
     background: #0f1419;
     border-right: 1px solid var(--glass-border);
@@ -337,6 +376,9 @@ header {
     color: var(--text-main);
     cursor: pointer;
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .add-btn:hover {
@@ -537,6 +579,7 @@ header {
     top: 0;
     width: 450px;
     height: 100vh;
+    height: 100dvh;
     background: #0a0e17;
     border-left: 1px solid var(--glass-border);
     display: flex;
@@ -676,29 +719,35 @@ header {
     left: 100%;
 }
 
-/* Animations */
+/* Animations - Optimized for Mobile Performance */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px) translateZ(0);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) translateZ(0);
     }
 }
 
 .product-card {
-    animation: fadeIn 0.5s ease backwards;
+    animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    will-change: opacity;
+    /* Avoid will-change transform on mid-range devices unless needed */
 }
 
 /* Utilities */
 .text-gradient {
     background: var(--gradient-main);
     -webkit-background-clip: text;
+    -moz-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    color: var(--primary);
+    /* Fallback */
 }
 
 .hidden {
@@ -721,18 +770,168 @@ header {
     z-index: 90;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
+    .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
     .sidebar {
+        width: 240px;
+    }
+
+    .content-area {
+        margin-left: 240px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        padding: 10px;
+        /* Better touch target */
+    }
+
+    /* Optimized for tall phones like Poco X6 / Nothing 2a */
+    header {
+        padding: 0 12px;
+        height: 65px;
+    }
+
+    .logo {
+        font-size: 1.05rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+    }
+
+    .search-bar {
+        display: none !important;
+    }
+
+    .nav-icons {
+        gap: 8px;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .sidebar {
+        width: 85%;
+        max-width: 300px;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2000;
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+        background: #0a0e17;
+        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.8);
+        will-change: transform;
+    }
+
+    .sidebar.mobile-active {
+        transform: translateX(0);
+        display: block;
+    }
+
+    /* Sidebar Overlay for Mobile */
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1999;
         display: none;
-        /* TODO: Add mobile menu */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
     }
 
     .content-area {
         margin-left: 0;
-        padding: 20px;
+        padding: 12px;
+        padding-top: calc(var(--header-height) + 12px);
+    }
+
+    .grid-container {
+        /* Optimal for Poco X6 446ppi density */
+        grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+        gap: 12px;
+        padding-bottom: 40px;
+    }
+
+    .product-card {
+        border-radius: 16px;
+    }
+
+    .card-content {
+        padding: 10px;
+    }
+
+    .product-title {
+        font-size: 13px;
+        line-height: 1.3;
+        margin-bottom: 4px;
     }
 
     .cart-sidebar {
+        width: 100% !important;
+        max-width: 100%;
+        z-index: 2100;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-overlay {
+        z-index: 3000;
+    }
+
+    .detail-card {
         width: 100%;
+        margin: 0;
+        height: 100%;
+        height: 100dvh;
+        max-height: 100vh;
+        max-height: 100dvh;
+        border-radius: 0;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .no-scroll {
+        overflow: hidden !important;
+    }
+
+    .primary-btn {
+        padding: 16px;
+        /* Thick touch target */
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
     }
 }

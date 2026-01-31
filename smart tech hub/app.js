@@ -38,7 +38,7 @@ function updateUserHeader() {
 
     if (user) {
         let html = `
-            <div style="text-align: right; margin-right: 10px;">
+            <div class="desktop-only" style="text-align: right; margin-right: 10px;">
                 <div style="font-size: 14px; font-weight: bold;">${user.name}</div>
                 <div style="font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" onclick="logout()">Logout</div>
             </div>
@@ -212,6 +212,14 @@ window.setCategory = function (id) {
     currentCategory = id;
     renderCategories();
     renderProducts();
+
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.remove('mobile-active');
+
+    // Update section title
+    const title = id === 'all' ? 'Featured Components' : getCategoryName(id);
+    const titleEl = document.querySelector('.section-title');
+    if (titleEl) titleEl.textContent = title;
 };
 
 window.addToCart = function (productId) {
@@ -355,8 +363,8 @@ function renderRecommendations() {
                 <h4 class="product-title" style="font-size: 13px; height: 34px; margin-bottom: 5px;">${product.name}</h4>
                 <div class="product-footer">
                     <div class="price" style="font-size: 14px;">₹${product.price ? product.price.toLocaleString() : 'N/A'}</div>
-                    <button class="add-btn" onclick="event.stopPropagation(); addToCart('${product.id}')" style="width: 30px; height: 30px;">
-                        <i class="fas fa-cart-plus" style="font-size: 12px;"></i>
+                    <button class="add-btn" onclick="event.stopPropagation(); addToCart('${product.id}')" style="width: 35px; height: 35px;">
+                        <i class="fas fa-cart-plus" style="font-size: 14px;"></i>
                     </button>
                 </div>
             </div>
@@ -640,4 +648,50 @@ function setupEventListeners() {
         // Show success alert or similar
         alert('All build components added to your cart!');
     };
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMobileMenu = document.getElementById('close-mobile-menu');
+    const sidebar = document.querySelector('.sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    function toggleSidebar(show) {
+        if (show) {
+            sidebar.classList.add('mobile-active');
+            backdrop.classList.add('active');
+            document.body.classList.add('no-scroll');
+        } else {
+            sidebar.classList.remove('mobile-active');
+            backdrop.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+    }
+
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSidebar(true);
+        });
+    }
+
+    if (closeMobileMenu) {
+        closeMobileMenu.addEventListener('click', () => {
+            toggleSidebar(false);
+        });
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', () => {
+            toggleSidebar(false);
+        });
+    }
+
+    // Close sidebar when clicking outside (fallback)
+    document.addEventListener('click', (e) => {
+        if (sidebar && sidebar.classList.contains('mobile-active')) {
+            if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                toggleSidebar(false);
+            }
+        }
+    });
 }

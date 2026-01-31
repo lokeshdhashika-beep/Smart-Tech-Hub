@@ -14,11 +14,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            overflow-x: hidden;
-        }
-
-        /* Animated Background */
+        /* Background Shapes */
         .auth-container {
             min-height: 100vh;
             display: flex;
@@ -27,96 +23,140 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
+            background-color: #05080d;
         }
 
-        .bg-shape {
+        .bg-glow {
             position: absolute;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            animation: float 10s infinite alternate;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .shape-1 {
-            top: -100px;
-            left: -100px;
+        .bg-glow-alt {
+            position: absolute;
             width: 500px;
             height: 500px;
-            background: rgba(0, 217, 255, 0.2);
-            animation-delay: 0s;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .shape-2 {
-            bottom: -100px;
-            right: -100px;
-            width: 400px;
-            height: 400px;
-            background: rgba(157, 78, 221, 0.2);
-            animation-delay: -5s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-
-            100% {
-                transform: translate(50px, 50px) rotate(20deg);
-            }
-        }
-
-        /* Card Container */
+        /* Form Animation System */
         .auth-perspective {
             width: 100%;
             max-width: 480px;
-            perspective: 1000px;
             position: relative;
-            min-height: 600px;
-            /* Pre-allocate space */
+            z-index: 10;
         }
 
         .auth-card {
             width: 100%;
             padding: 40px;
+            background: #0f1419;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+
+        .auth-card.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            animation: cardEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes cardEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .auth-card.exit {
+            display: block;
             position: absolute;
             top: 0;
             left: 0;
-            backface-visibility: hidden;
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-style: preserve-3d;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: cardExit 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+            pointer-events: none;
         }
 
-        /* States for Flip Animation */
-        .auth-card.front {
-            transform: rotateY(0deg);
-            z-index: 2;
+        @keyframes cardExit {
+            from {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
         }
 
-        .auth-card.back {
-            transform: rotateY(180deg);
-            z-index: 1;
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 0;
+            }
+
+            .auth-perspective {
+                max-width: 100%;
+                min-height: 100vh;
+            }
+
+            .auth-card {
+                padding: 40px 25px;
+                border-radius: 0;
+                min-height: 100vh;
+                display: none;
+                /* Keep base display none */
+                flex-direction: column;
+                justify-content: center;
+                border: none;
+            }
+
+            .auth-card.active {
+                display: flex;
+            }
+
+            .auth-logo {
+                font-size: 26px;
+                margin-bottom: 20px;
+            }
+
+            .auth-title {
+                font-size: 24px;
+            }
         }
 
-        .flipped .auth-card.front {
-            transform: rotateY(-180deg);
-            z-index: 1;
-        }
-
-        .flipped .auth-card.back {
-            transform: rotateY(0deg);
-            z-index: 2;
-        }
-
-        /* Inner Elements */
         .auth-logo {
             font-size: 32px;
             font-weight: 800;
             background: var(--gradient-main);
             -webkit-background-clip: text;
+            -moz-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            -moz-text-fill-color: transparent;
+            color: var(--primary);
+            /* Fallback */
             margin-bottom: 30px;
             display: inline-block;
             cursor: pointer;
@@ -357,17 +397,13 @@
 <body>
 
     <div class="auth-container">
-        <!-- Liquid Background -->
-        <div class="liquid-bg">
-            <div class="blob blob-1"></div>
-            <div class="blob blob-2"></div>
-            <div class="blob blob-3"></div>
-        </div>
+        <div class="bg-glow"></div>
+        <div class="bg-glow-alt"></div>
 
         <div class="auth-perspective" id="card-container">
 
             <!-- Login Side (Front) -->
-            <div class="auth-card glass-panel front">
+            <div class="auth-card active" id="login-card">
                 <a href="index.html" class="close-btn" title="Back to Home">
                     <i class="fas fa-times"></i>
                 </a>
@@ -409,7 +445,7 @@
             </div>
 
             <!-- Signup Side (Back) -->
-            <div class="auth-card glass-panel back">
+            <div class="auth-card" id="signup-card">
                 <a href="index.html" class="close-btn" title="Back to Home">
                     <i class="fas fa-times"></i>
                 </a>
@@ -453,12 +489,30 @@
     <script>
         // Animation Logic
         function toggleFlip() {
-            const container = document.getElementById('card-container');
-            container.classList.toggle('flipped');
+            const loginCard = document.getElementById('login-card');
+            const signupCard = document.getElementById('signup-card');
 
-            // Interaction Sound (Optional)
-            // const audio = new Audio('click.mp3'); 
-            // audio.play().catch(e => {}); 
+            if (loginCard.classList.contains('active')) {
+                // Switch to Signup
+                loginCard.classList.remove('active');
+                loginCard.classList.add('exit');
+
+                signupCard.classList.add('active');
+
+                setTimeout(() => {
+                    loginCard.classList.remove('exit');
+                }, 400);
+            } else {
+                // Switch to Login
+                signupCard.classList.remove('active');
+                signupCard.classList.add('exit');
+
+                loginCard.classList.add('active');
+
+                setTimeout(() => {
+                    signupCard.classList.remove('exit');
+                }, 400);
+            }
         }
 
         // Add shake effect to inputs if empty on submit (handled in auth.js mostly, but we can add visual feedback)

@@ -34,8 +34,12 @@
     padding-left: 10px;
     background: var(--gradient-main);
     -webkit-background-clip: text;
+    -moz-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    color: var(--primary);
+    /* Fallback */
 }
 
 .nav-item {
@@ -240,4 +244,49 @@ textarea:focus {
 .secondary-btn:hover {
     background: rgba(255, 255, 255, 0.05);
     color: white;
+}
+
+@media (max-width: 992px) {
+    .admin-sidebar {
+        width: 80px;
+        padding: 20px 10px;
+    }
+
+    .admin-logo {
+        font-size: 14px;
+        text-align: center;
+        padding: 0;
+    }
+
+    .nav-item span {
+        display: none;
+    }
+
+    .admin-content {
+        margin-left: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        display: none;
+    }
+
+    .admin-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
 }

@@ -112,6 +112,42 @@
                 border-top: 2px solid #000;
             }
         }
+
+        /* Mobile Adjustments */
+        @media (max-width: 900px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .checkout-container {
+                margin: 20px auto;
+            }
+
+            .checkout-title {
+                text-align: center;
+                font-size: 1.8rem;
+            }
+
+            .payment-section {
+                order: -1;
+                /* Put payment on top on mobile? Actually maybe bottom is better for bill review */
+                order: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .order-summary,
+            .payment-section {
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .bill-header h2 {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 
